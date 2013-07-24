@@ -63,7 +63,7 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
         // can't use offsets field due to a bug in 1.0.0-RC2
         arg1 = new Part(inst.extr.arg1.text, Seq(Interval.open(inst.extr.arg1.tokens.head.offsets.start, inst.extr.arg1.tokens.last.offsets.end))),
         arg2s = inst.extr.arg2s.map(arg2 => new Part(arg2.text, Seq(Interval.open(arg2.tokens.head.offsets.start, arg2.tokens.last.offsets.end)))),
-        context = None,
+        context = inst.extr.context.map(context => new Part(context.text, Seq(Interval.open(context.tokens.head.offsets.start, context.tokens.last.offsets.end)))),
         negated = false)
     }
 
