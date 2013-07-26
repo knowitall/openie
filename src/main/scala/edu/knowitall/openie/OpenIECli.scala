@@ -15,7 +15,7 @@ import java.io.PrintStream
 import edu.knowitall.tool.sentence.OpenNlpSentencer
 import edu.knowitall.openie.util.SentenceIterator
 
-object OpenIEMain extends App {
+object OpenIECli extends App {
   case class Config(inputFile: Option[File] = None,
     outputFile: Option[File] = None,
     parserServer: Option[URL] = None,
