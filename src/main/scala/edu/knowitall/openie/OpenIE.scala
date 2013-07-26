@@ -22,8 +22,13 @@ import edu.knowitall.tool.srl.Srl
 import edu.knowitall.tool.parse.DependencyParser
 import edu.knowitall.tool.srl.ClearSrl
 import edu.knowitall.srlie.SrlExtraction
+import edu.knowitall.srlie.confidence.SrlConfidenceFunction
 
 class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearSrl(), triples: Boolean = false) {
+  // confidence functions
+  val srlieConf = SrlConfidenceFunction.loadDefaultClassifier()
+  val relnounConf = (x: Any) => 0.8
+
   // sentence pre-processors
   val tokenizer = new ClearTokenizer()
   val postagger = new OpenNlpPostagger(tokenizer)
@@ -33,8 +38,8 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
   val relnoun = new Relnoun
   val srlie = new SrlExtractor(srl)
 
-  def apply(sentence: String): Seq[Extraction] = extract(sentence)
-  def extract(sentence: String): Seq[Extraction] = {
+  def apply(sentence: String): Seq[Instance] = extract(sentence)
+  def extract(sentence: String): Seq[Instance] = {
     // pre-process the sentence
     val chunked = chunker(sentence) map MorphaStemmer.lemmatizePostaggedToken
     val parsed = parser(sentence)
@@ -43,7 +48,7 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
     val srlExtrs = srlie(parsed)
     val relnounExtrs = relnoun(chunked)
 
-    def convertSrl(inst: SrlExtractionInstance): Extraction = {
+    def convertSrl(inst: SrlExtractionInstance): Instance = {
       def offsets(part: SrlExtraction.MultiPart) = {
         var intervals = part.intervals
         var tokens = part.tokens
@@ -58,25 +63,27 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
 
         offsets.reverse
       }
-      new Extraction(
+      val extr = new Extraction(
         rel = new Part(inst.extr.rel.text, offsets(inst.extr.rel)),
         // can't use offsets field due to a bug in 1.0.0-RC2
         arg1 = new Part(inst.extr.arg1.text, Seq(Interval.open(inst.extr.arg1.tokens.head.offsets.start, inst.extr.arg1.tokens.last.offsets.end))),
         arg2s = inst.extr.arg2s.map(arg2 => new Part(arg2.text, Seq(Interval.open(arg2.tokens.head.offsets.start, arg2.tokens.last.offsets.end)))),
         context = inst.extr.context.map(context => new Part(context.text, Seq(Interval.open(context.tokens.head.offsets.start, context.tokens.last.offsets.end)))),
         negated = false)
+      Instance(srlieConf(inst), sentence, extr)
     }
 
-    def convertRelnoun(inst: BinaryExtractionInstance[ChunkedToken]): Extraction = {
-      new Extraction(
+    def convertRelnoun(inst: BinaryExtractionInstance[ChunkedToken]): Instance = {
+      val extr = new Extraction(
         rel = new Part(inst.extr.rel.text, Seq(inst.extr.rel.offsetInterval)),
         arg1 = new Part(inst.extr.arg1.text, Seq(inst.extr.arg1.offsetInterval)),
         arg2s = Seq(new Part(inst.extr.arg2.text, Seq(inst.extr.arg2.offsetInterval))),
         context = None,
         negated = false)
+      Instance(0.8, sentence, extr)
     }
 
-    val extrs = (srlExtrs map convertSrl) // ++ (relnounExtrs map convertRelnoun)
+    val extrs = (srlExtrs map convertSrl) ++ (relnounExtrs map convertRelnoun)
 
     extrs
   }
