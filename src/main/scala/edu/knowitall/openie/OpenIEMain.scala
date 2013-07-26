@@ -12,13 +12,16 @@ import edu.knowitall.tool.srl.Srl
 import edu.knowitall.tool.srl.RemoteSrl
 import edu.knowitall.tool.srl.ClearSrl
 import java.io.PrintStream
+import edu.knowitall.tool.sentence.OpenNlpSentencer
+import edu.knowitall.openie.util.SentenceIterator
 
 object OpenIEMain extends App {
   case class Config(inputFile: Option[File] = None,
     outputFile: Option[File] = None,
     parserServer: Option[URL] = None,
     srlServer: Option[URL] = None,
-    encoding: String = "UTF-8") {
+    encoding: String = "UTF-8",
+    split: Boolean = false) {
     def source() = {
       inputFile match {
         case Some(file) => Source.fromFile(file, encoding)
@@ -63,6 +66,9 @@ object OpenIEMain extends App {
       },
       opt("encoding", "Character encoding") { (string, config) =>
         config.copy(encoding = string)
+      },
+      flag("s", "split", "Split paragraphs into sentences") { config =>
+        config.copy(split = true)
       })
   }
 
@@ -74,9 +80,15 @@ object OpenIEMain extends App {
   def run(config: Config) {
     val openie = new OpenIE(parser=config.createParser(), srl=config.createSrl())
 
+    lazy val sentencer = new OpenNlpSentencer
+
     for {
       source <- managed(config.source())
       writer <- managed(config.writer())
+
+      lines =
+        if (config.split) new SentenceIterator(sentencer, source.getLines.buffered)
+        else source.getLines
 
       line <- source.getLines
       extr <- openie.extract(line)
