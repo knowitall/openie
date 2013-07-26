@@ -16,11 +16,45 @@ import edu.knowitall.tool.sentence.OpenNlpSentencer
 import edu.knowitall.openie.util.SentenceIterator
 
 object OpenIECli extends App {
+  object OutputFormat {
+    def parse(format: String): OutputFormat = format match {
+      case "simple" => SimpleFormat
+      case "column" => ColumnFormat
+      case _ => throw new MatchError("Unknown format: " + format)
+    }
+  }
+  sealed abstract class OutputFormat {
+    def print(sentence: String, insts: Seq[Instance])
+  }
+  case object SimpleFormat extends OutputFormat {
+    def print(sentence: String, insts: Seq[Instance]) {
+      println(sentence)
+      insts foreach println
+      println()
+    }
+  }
+  case object ColumnFormat extends OutputFormat {
+    def print(sentence: String, insts: Seq[Instance]) {
+      insts.foreach { inst =>
+        println(
+            Iterator(
+                inst.confidence,
+                inst.extr.context.getOrElse(""),
+                inst.extr.arg1,
+                inst.extr.rel,
+                inst.extr.arg2s.mkString("; "),
+                sentence
+            ).mkString("\t"))
+      }
+    }
+  }
+
   case class Config(inputFile: Option[File] = None,
     outputFile: Option[File] = None,
     parserServer: Option[URL] = None,
     srlServer: Option[URL] = None,
     encoding: String = "UTF-8",
+    formatter: OutputFormat = SimpleFormat,
     split: Boolean = false) {
     def source() = {
       inputFile match {
@@ -67,6 +101,9 @@ object OpenIECli extends App {
       opt("encoding", "Character encoding") { (string, config) =>
         config.copy(encoding = string)
       },
+      opt("format", "Output format") { (string, config) =>
+        config.copy(formatter = OutputFormat.parse(string))
+      },
       flag("s", "split", "Split paragraphs into sentences") { config =>
         config.copy(split = true)
       })
@@ -86,18 +123,15 @@ object OpenIECli extends App {
       source <- managed(config.source())
       writer <- managed(config.writer())
 
-      lines =
+      sentences =
         if (config.split) new SentenceIterator(sentencer, source.getLines.buffered)
         else source.getLines
 
-      line <- source.getLines
-      if !line.trim.isEmpty
+      sentence <- sentences
+      if !sentence.trim.isEmpty
     } {
-      println(line)
-      for (extr <- openie.extract(line)) {
-        println(extr)
-      }
-      println()
+      val insts = openie.extract(sentence)
+      config.formatter.print(sentence, insts)
     }
   }
 }
