@@ -72,7 +72,8 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
         arg1 = new Part(inst.extr.arg1.text, Seq(Interval.open(inst.extr.arg1.tokens.head.offsets.start, inst.extr.arg1.tokens.last.offsets.end))),
         arg2s = inst.extr.arg2s.map(arg2 => new Part(arg2.text, Seq(Interval.open(arg2.tokens.head.offsets.start, arg2.tokens.last.offsets.end)))),
         context = inst.extr.context.map(context => new Part(context.text, Seq(Interval.open(context.tokens.head.offsets.start, context.tokens.last.offsets.end)))),
-        negated = false)
+        negated = inst.extr.negated,
+        passive = inst.extr.passive)
       Instance(srlieConf(inst), sentence, extr)
     }
 
@@ -82,7 +83,8 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
         arg1 = new Part(inst.extr.arg1.text, Seq(inst.extr.arg1.offsetInterval)),
         arg2s = Seq(new Part(inst.extr.arg2.text, Seq(inst.extr.arg2.offsetInterval))),
         context = None,
-        negated = false)
+        negated = false,
+        passive = false)
       Instance(relnounConf(inst), sentence, extr)
     }
 
