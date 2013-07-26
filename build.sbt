@@ -12,7 +12,7 @@ resolvers += "Sonatype SNAPSHOTS" at "https://oss.sonatype.org/content/repositor
 
 libraryDependencies ++= Seq(
   "edu.washington.cs.knowitall.srlie" %% "srlie" % "1.0.0-RC2",
-  "edu.washington.cs.knowitall.chunkedextractor" %% "chunkedextractor" % "1.0.4",
+  "edu.washington.cs.knowitall.chunkedextractor" %% "chunkedextractor" % "1.0.5",
   "net.databinder.dispatch" %% "dispatch-core" % "0.10.0", // for remotes
   "com.jsuereth" %% "scala-arm" % "1.3")
 

@@ -23,11 +23,12 @@ import edu.knowitall.tool.parse.DependencyParser
 import edu.knowitall.tool.srl.ClearSrl
 import edu.knowitall.srlie.SrlExtraction
 import edu.knowitall.srlie.confidence.SrlConfidenceFunction
+import edu.knowitall.chunkedextractor.confidence.RelnounConfidenceFunction
 
 class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearSrl(), triples: Boolean = false) {
   // confidence functions
   val srlieConf = SrlConfidenceFunction.loadDefaultClassifier()
-  val relnounConf = (x: Any) => 0.8
+  val relnounConf = RelnounConfidenceFunction.loadDefaultClassifier()
 
   // sentence pre-processors
   val tokenizer = new ClearTokenizer()
@@ -45,7 +46,9 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
     val parsed = parser(sentence)
 
     // run extractors
-    val srlExtrs = srlie(parsed)
+    val srlExtrs: Seq[SrlExtractionInstance] =
+      if (triples) srlie(parsed).flatMap(_.triplize())
+      else srlie(parsed)
     val relnounExtrs = relnoun(chunked)
 
     def convertSrl(inst: SrlExtractionInstance): Instance = {
@@ -80,7 +83,7 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
         arg2s = Seq(new Part(inst.extr.arg2.text, Seq(inst.extr.arg2.offsetInterval))),
         context = None,
         negated = false)
-      Instance(0.8, sentence, extr)
+      Instance(relnounConf(inst), sentence, extr)
     }
 
     val extrs = (srlExtrs map convertSrl) ++ (relnounExtrs map convertRelnoun)
