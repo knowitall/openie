@@ -11,23 +11,25 @@ import edu.knowitall.tool.parse.RemoteDependencyParser
 import edu.knowitall.tool.srl.Srl
 import edu.knowitall.tool.srl.RemoteSrl
 import edu.knowitall.tool.srl.ClearSrl
+import java.io.PrintStream
 
 object OpenIEMain extends App {
   case class Config(inputFile: Option[File] = None,
     outputFile: Option[File] = None,
     parserServer: Option[URL] = None,
-    srlServer: Option[URL] = None) {
+    srlServer: Option[URL] = None,
+    encoding: String = "UTF-8") {
     def source() = {
       inputFile match {
-        case Some(file) => Source.fromFile(file, "UTF-8")
-        case None => Source.fromInputStream(System.in, "UTF-8")
+        case Some(file) => Source.fromFile(file, encoding)
+        case None => Source.fromInputStream(System.in, encoding)
       }
     }
 
     def writer() = {
       outputFile match {
-        case Some(file) => new PrintWriter(file, "UTF8")
-        case None => new PrintWriter(System.out)
+        case Some(file) => new PrintWriter(file, encoding)
+        case None => new PrintWriter(new PrintStream(System.out, true, encoding))
       }
     }
 
@@ -58,6 +60,9 @@ object OpenIEMain extends App {
       },
       opt("srl-server", "SRL server") { (string, config) =>
         config.copy(srlServer = Some(new URL(string)))
+      },
+      opt("encoding", "Character encoding") { (string, config) =>
+        config.copy(encoding = string)
       })
   }
 
