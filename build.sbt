@@ -14,7 +14,9 @@ libraryDependencies ++= Seq(
   "edu.washington.cs.knowitall.srlie" %% "srlie" % "1.0.0-RC2",
   "edu.washington.cs.knowitall.chunkedextractor" %% "chunkedextractor" % "1.0.5",
   "net.databinder.dispatch" %% "dispatch-core" % "0.10.0", // for remotes
-  "com.jsuereth" %% "scala-arm" % "1.3")
+  "com.jsuereth" %% "scala-arm" % "1.3",
+  "org.slf4j" % "slf4j-api" % "1.7.2",
+  "ch.qos.logback" % "logback-classic" % "1.0.9")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
