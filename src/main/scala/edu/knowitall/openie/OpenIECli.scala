@@ -91,9 +91,13 @@ object OpenIECli extends App {
         else source.getLines
 
       line <- source.getLines
-      extr <- openie.extract(line)
+      if !line.trim.isEmpty
     } {
-      println(extr)
+      println(line)
+      for (extr <- openie.extract(line)) {
+        println(extr)
+      }
+      println()
     }
   }
 }
