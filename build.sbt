@@ -26,6 +26,16 @@ libraryDependencies ++= Seq(
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
+// custom options for high memory usage
+
+javaOptions += "-Xmx4G"
+
+javaOptions += "-XX:+UseConcMarkSweepGC"
+
+fork in run := true
+
+connectInput in run := true // forward stdin/out to fork
+
 licenses := Seq("Ollie Software License Agreement" -> url("https://raw.github.com/knowitall/ollie/master/LICENSE"))
 
 homepage := Some(url("https://github.com/knowitall/openie"))
