@@ -52,7 +52,7 @@ dependencies and compiling is simple.  Just run:
 
 ## Running
 
-You can run 'openie' with sbt or create a stand-alone jar.
+You can run `openie` with sbt or create a stand-alone jar.
 
 ### Running with sbt
 
