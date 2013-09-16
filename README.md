@@ -68,5 +68,37 @@ Then you can run the resulting jar file as normal.
 
     java -jar srlie-assembly.jar 
 
+### Command Line Interface
+
+`openie` takes one sentence per line.  You can 
+either pipe input from Standard Input, specify an 
+input file (an option first argument), or type sentences
+interactively.  Output will be written to Standard Output
+unless a second option argument is specified for an output
+file.
+
+There are two formats--an simple format made for ease of reading
+and a columnated format used for machine processing.  The format
+can be specified with either `--format simple` or `--format columnated`.
+The simple format is chosen by default.
+
+#### Simple Format
+
+```
+> John ran down the road to fetch a pail of water.
+John ran down the road to fetch a pail of water.
+0.86 (John; ran; down the road; to fetch a pail of water)
+0.82 John ran:(John; ran down the road to fetch; a pail of water)
+```
+
+#### Columnated Format
+
+Columns are separated by tab, making it hard to read in this README.
+
+```
+0.8576784836790008	John	ran	down the road; to fetch a pail of water	John ran down the road to fetch a pail of water.
+0.8195727266148489	John ran	John	ran down the road to fetch	a pail of water	John ran down the road to fetch a pail of water.
+```
+
 ## Contributors
 * Michael Schmitz (http://www.schmitztech.com/)
