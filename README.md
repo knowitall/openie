@@ -43,5 +43,30 @@ have a correct extraction.
 
 To see an example of Open IE being used, please visit http://openie.cs.washington.edu/.
 
+## Buiding
+
+`openie` uses the [sbt build system](http://www.scala-sbt.org/), so downloading 
+dependencies and compiling is simple.  Just run:
+
+    sbt compile
+
+## Running
+
+You can run 'openie' with sbt or create a stand-alone jar.
+
+### Running with sbt
+
+   sbt 'run-main edu.knowitall.openie.OpenIECli'
+   
+### Running from a stand-alone jar.
+
+First create the stand-alone jar.
+
+    sbt clean compile assembly
+    
+Then you can run the resulting jar file as normal.
+
+    java -jar srlie-assembly.jar 
+
 ## Contributors
 * Michael Schmitz (http://www.schmitztech.com/)
