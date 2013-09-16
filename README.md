@@ -1,4 +1,4 @@
-openie
+Open IE
 ======
 This project contains the principal Open Information Extraction (Open IE)
 system from the University of Washington (UW).  An Open IE system runs over
@@ -56,7 +56,7 @@ You can run 'openie' with sbt or create a stand-alone jar.
 
 ### Running with sbt
 
-   sbt 'run-main edu.knowitall.openie.OpenIECli'
+    sbt 'run-main edu.knowitall.openie.OpenIECli'
    
 ### Running from a stand-alone jar.
 
