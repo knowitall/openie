@@ -1,3 +1,7 @@
+import AssemblyKeys._
+
+assemblySettings
+
 name := "srlie"
 
 organization := "edu.washington.cs.knowitall.openie"
@@ -23,6 +27,8 @@ libraryDependencies ++= Seq(
   // logging
   "org.slf4j" % "slf4j-api" % "1.7.2",
   "ch.qos.logback" % "logback-classic" % "1.0.9")
+
+mainClass in assembly := Some("edu.knowitall.openie.OpenIECli")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
