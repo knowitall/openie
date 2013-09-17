@@ -8,7 +8,7 @@ organization := "edu.washington.cs.knowitall.openie"
 
 version := "4.0-SNAPSHOT"
 
-crossScalaVersions := Seq("2.10.2", "2.9.3")
+crossScalaVersions := Seq("2.10.2")
 
 scalaVersion <<= crossScalaVersions { (vs: Seq[String]) => vs.head }
 
@@ -16,10 +16,10 @@ resolvers += "Sonatype SNAPSHOTS" at "https://oss.sonatype.org/content/repositor
 
 libraryDependencies ++= Seq(
   // extractor components
-  "edu.washington.cs.knowitall.srlie" %% "srlie" % "1.0.0-RC2",
+  "edu.washington.cs.knowitall.srlie" %% "srlie" % "1.0.0-RC3",
   "edu.washington.cs.knowitall.chunkedextractor" %% "chunkedextractor" % "1.0.5",
   // for splitting sentences
-  "edu.washington.cs.knowitall.nlptools" % "nlptools-sentence-opennlp_2.10" % "2.4.2",
+  "edu.washington.cs.knowitall.nlptools" %% "nlptools-sentence-opennlp" % "2.4.2",
   // for remote components
   "net.databinder.dispatch" %% "dispatch-core" % "0.10.0",
   // resource management
