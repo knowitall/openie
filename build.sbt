@@ -2,7 +2,7 @@ import AssemblyKeys._
 
 assemblySettings
 
-name := "srlie"
+name := "openie"
 
 organization := "edu.washington.cs.knowitall.openie"
 
