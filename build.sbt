@@ -16,7 +16,7 @@ resolvers += "Sonatype SNAPSHOTS" at "https://oss.sonatype.org/content/repositor
 
 libraryDependencies ++= Seq(
   // extractor components
-  "edu.washington.cs.knowitall.srlie" %% "srlie" % "1.0.0-RC3",
+  "edu.washington.cs.knowitall.srlie" %% "srlie" % "1.0.0",
   "edu.washington.cs.knowitall.chunkedextractor" %% "chunkedextractor" % "1.0.5",
   // for splitting sentences
   "edu.washington.cs.knowitall.nlptools" %% "nlptools-sentence-opennlp" % "2.4.2",
@@ -25,8 +25,8 @@ libraryDependencies ++= Seq(
   // resource management
   "com.jsuereth" %% "scala-arm" % "1.3",
   // logging
-  "org.slf4j" % "slf4j-api" % "1.7.2",
-  "ch.qos.logback" % "logback-classic" % "1.0.9")
+  "org.slf4j" % "slf4j-api" % "1.7.5",
+  "ch.qos.logback" % "logback-classic" % "1.0.13")
 
 mainClass in assembly := Some("edu.knowitall.openie.OpenIECli")
 
