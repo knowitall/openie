@@ -43,7 +43,7 @@ fork in run := true
 
 connectInput in run := true // forward stdin/out to fork
 
-licenses := Seq("Ollie Software License Agreement" -> url("https://raw.github.com/knowitall/ollie/master/LICENSE"))
+licenses := Seq("Open IE Software License Agreement" -> url("https://raw.github.com/knowitall/openie/master/LICENSE"))
 
 homepage := Some(url("https://github.com/knowitall/openie"))
 
