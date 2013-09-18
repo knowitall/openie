@@ -26,6 +26,7 @@ libraryDependencies ++= Seq(
   "com.jsuereth" %% "scala-arm" % "1.3",
   // logging
   "org.slf4j" % "slf4j-api" % "1.7.5",
+  "ch.qos.logback" % "logback-core" % "1.0.13",
   "ch.qos.logback" % "logback-classic" % "1.0.13")
 
 mainClass in assembly := Some("edu.knowitall.openie.OpenIECli")
