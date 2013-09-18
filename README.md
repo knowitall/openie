@@ -45,33 +45,40 @@ To see an example of Open IE being used, please visit http://openie.cs.washingto
 
 ## Buiding
 
-`openie` uses the [sbt build system](http://www.scala-sbt.org/), so downloading 
+`openie` uses the [sbt build system](http://www.scala-sbt.org/), so downloading
 dependencies and compiling is simple.  Just run:
 
     sbt compile
 
 ## Running
 
-You can run `openie` with sbt or create a stand-alone jar.
+You can run `openie` with sbt or create a stand-alone jar.  `openie` requires
+substantial memory.  `sbt` is configured to use these options by default:
+
+   -Xmx4G -XX:+UseConcMarkSweepGC
 
 ### Running with sbt
 
     sbt 'run-main edu.knowitall.openie.OpenIECli'
-   
+
 ### Running from a stand-alone jar.
 
 First create the stand-alone jar.
 
     sbt clean compile assembly
-    
+
 Then you can run the resulting jar file as normal.
 
-    java -jar srlie-assembly.jar 
+    java -jar srlie-assembly.jar
+
+You may need to add the above memory options.
+
+    java -Xmx4g -XX:+UseConcMarkSweepGC -jar srlie-assembly.jar
 
 ### Command Line Interface
 
-`openie` takes one sentence per line.  You can 
-either pipe input from Standard Input, specify an 
+`openie` takes one sentence per line.  You can
+either pipe input from Standard Input, specify an
 input file (an option first argument), or type sentences
 interactively.  Output will be written to Standard Output
 unless a second option argument is specified for an output
