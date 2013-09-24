@@ -14,6 +14,7 @@ import edu.knowitall.tool.srl.ClearSrl
 import java.io.PrintStream
 import edu.knowitall.tool.sentence.OpenNlpSentencer
 import edu.knowitall.openie.util.SentenceIterator
+import java.nio.charset.MalformedInputException
 
 /***
  * A command line application for exploring Open IE.
@@ -85,6 +86,8 @@ object OpenIECli extends App {
     srlServer: Option[URL] = None,
     encoding: String = "UTF-8",
     formatter: OutputFormat = SimpleFormat,
+    ignoreErrors: Boolean = false,
+    showUsage: Boolean = false,
     split: Boolean = false) {
 
     /***
@@ -142,13 +145,31 @@ object OpenIECli extends App {
       opt("format", "Output format") { (string, config) =>
         config.copy(formatter = OutputFormat.parse(string))
       },
+      flag("u", "usage", "show cli usage") { config =>
+        config.copy(showUsage = true)
+      },
+      flag("ignore-errors", "ignore errors") { config =>
+        config.copy(ignoreErrors = true)
+      },
       flag("s", "split", "Split paragraphs into sentences") { config =>
         config.copy(split = true)
       })
   }
 
   argumentParser.parse(args, Config()) match {
-    case Some(config) => run(config)
+    case Some(config) if config.showUsage => println(argumentParser.usage)
+    case Some(config) =>
+      try {
+        run(config)
+      }
+      catch {
+        case e: MalformedInputException =>
+          System.err.println(
+            "\nError: a MalformedInputException was thrown.\n" +
+            "This usually means there is a mismatch between what Ollie expects and the input file.\n" +
+            "Try changing the input file's character encoding to UTF-8 or specifying the correct character encoding for the input file with '--encoding'.\n")
+          e.printStackTrace()
+      }
     case None => // usage will be shown
   }
 
@@ -162,19 +183,29 @@ object OpenIECli extends App {
     // a sentencer used if --split is specified
     lazy val sentencer = new OpenNlpSentencer
 
+    // iterate over input
     for {
       source <- managed(config.source())
       writer <- managed(config.writer())
-
-      sentences =
-        if (config.split) new SentenceIterator(sentencer, source.getLines.buffered)
-        else source.getLines
-
-      sentence <- sentences
-      if !sentence.trim.isEmpty
     } {
-      val insts = openie.extract(sentence)
-      config.formatter.print(sentence, insts)
+      try {
+        val sentences =
+          if (config.split) new SentenceIterator(sentencer, source.getLines.buffered)
+          else source.getLines
+
+        // iterate over sentences
+        for {
+          sentence <- sentences
+          if !sentence.trim.isEmpty
+        } {
+            // run the extractor
+            val insts = openie.extract(sentence)
+            config.formatter.print(sentence, insts)
+        }
+      }
+      catch {
+        case e if config.ignoreErrors => e.printStackTrace()
+      }
     }
   }
 }
