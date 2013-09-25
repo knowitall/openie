@@ -54,7 +54,9 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
     def convertSrl(inst: SrlExtractionInstance): Instance = {
       def offsets(part: SrlExtraction.MultiPart) = {
         var intervals = part.intervals
-        var tokens = part.tokens
+        // hack: sorted should not be necessary
+        // see https://github.com/knowitall/srlie/issues/8)
+        var tokens = part.tokens.sorted
         var offsets = List.empty[Interval]
         while (!intervals.isEmpty) {
           val sectionTokens = tokens.take(intervals.head.size)
