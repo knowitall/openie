@@ -203,7 +203,12 @@ object OpenIECli extends App {
           config.formatter.print(sentence, insts)
         }
         catch {
-          case e if config.ignoreErrors => e.printStackTrace()
+          case e if config.ignoreErrors =>
+            System.err.println("Error on sentence: " + sentence)
+            e.printStackTrace()
+          case e: Exception =>
+            System.err.println("Error on sentence: " + sentence)
+            throw e
         }
       }
     }
