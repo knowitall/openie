@@ -188,23 +188,23 @@ object OpenIECli extends App {
       source <- managed(config.source())
       writer <- managed(config.writer())
     } {
-      try {
-        val sentences =
-          if (config.split) new SentenceIterator(sentencer, source.getLines.buffered)
-          else source.getLines
+      val sentences =
+        if (config.split) new SentenceIterator(sentencer, source.getLines.buffered)
+        else source.getLines
 
-        // iterate over sentences
-        for {
-          sentence <- sentences
-          if !sentence.trim.isEmpty
-        } {
-            // run the extractor
-            val insts = openie.extract(sentence)
-            config.formatter.print(sentence, insts)
+      // iterate over sentences
+      for {
+        sentence <- sentences
+        if !sentence.trim.isEmpty
+      } {
+        try {
+          // run the extractor
+          val insts = openie.extract(sentence)
+          config.formatter.print(sentence, insts)
         }
-      }
-      catch {
-        case e if config.ignoreErrors => e.printStackTrace()
+        catch {
+          case e if config.ignoreErrors => e.printStackTrace()
+        }
       }
     }
   }
