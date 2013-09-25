@@ -66,15 +66,21 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
 
         offsets.reverse
       }
-      val extr = new Extraction(
-        rel = new Part(inst.extr.rel.text, offsets(inst.extr.rel)),
-        // can't use offsets field due to a bug in 1.0.0-RC2
-        arg1 = new Part(inst.extr.arg1.text, Seq(Interval.open(inst.extr.arg1.tokens.head.offsets.start, inst.extr.arg1.tokens.last.offsets.end))),
-        arg2s = inst.extr.arg2s.map(arg2 => new Part(arg2.text, Seq(Interval.open(arg2.tokens.head.offsets.start, arg2.tokens.last.offsets.end)))),
-        context = inst.extr.context.map(context => new Part(context.text, Seq(Interval.open(context.tokens.head.offsets.start, context.tokens.last.offsets.end)))),
-        negated = inst.extr.negated,
-        passive = inst.extr.passive)
-      Instance(srlieConf(inst), sentence, extr)
+      try {
+        val extr = new Extraction(
+          rel = new Part(inst.extr.rel.text, offsets(inst.extr.rel)),
+          // can't use offsets field due to a bug in 1.0.0-RC2
+          arg1 = new Part(inst.extr.arg1.text, Seq(Interval.open(inst.extr.arg1.tokens.head.offsets.start, inst.extr.arg1.tokens.last.offsets.end))),
+          arg2s = inst.extr.arg2s.map(arg2 => new Part(arg2.text, Seq(Interval.open(arg2.tokens.head.offsets.start, arg2.tokens.last.offsets.end)))),
+          context = inst.extr.context.map(context => new Part(context.text, Seq(Interval.open(context.tokens.head.offsets.start, context.tokens.last.offsets.end)))),
+          negated = inst.extr.negated,
+          passive = inst.extr.passive)
+        Instance(srlieConf(inst), sentence, extr)
+      }
+      catch {
+        case e: Exception =>
+          throw new OpenIEException("Error converting SRL instance to Open IE instance: " + inst, e)
+      }
     }
 
     def convertRelnoun(inst: BinaryExtractionInstance[ChunkedToken]): Instance = {
