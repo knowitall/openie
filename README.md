@@ -69,25 +69,29 @@ First create the stand-alone jar.
 
 Then you can run the resulting jar file as normal.
 
-    java -jar srlie-assembly.jar
+    java -jar openie-assembly.jar
 
 You may need to add the above memory options.
 
-    java -Xmx4g -XX:+UseConcMarkSweepGC -jar srlie-assembly.jar
+    java -Xmx4g -XX:+UseConcMarkSweepGC -jar openie-assembly.jar
 
 ### Command Line Interface
 
-`openie` takes one sentence per line.  You can
-either pipe input from Standard Input, specify an
-input file (an option first argument), or type sentences
-interactively.  Output will be written to Standard Output
-unless a second option argument is specified for an output
-file.
+`openie` takes one sentence per line unless `--split` is specified.  If
+`--split` is specified, the input text will be split into sentences.  You can
+either pipe input from Standard Input, specify an input file (an option first
+argument), or type sentences interactively.  Output will be written to Standard
+Output unless a second option argument is specified for an output file.
 
-There are two formats--an simple format made for ease of reading
-and a columnated format used for machine processing.  The format
-can be specified with either `--format simple` or `--format columnated`.
-The simple format is chosen by default.
+`openie` takes a number of command line arguments.  To see them all run
+`java -jar openie-assembly.jar --usage`.  Of particular interest are
+`--ignore-errors` which continues running even if an exception is encountered,
+and `--split` which splits the input document text into sentences.
+
+There are two formats--a simple format made for ease of reading and a
+columnated format used for machine processing.  The format can be specified
+with either `--format simple` or `--format columnated`.  The simple format is
+chosen by default.
 
 #### Simple Format
 
