@@ -124,12 +124,12 @@ object OpenIECli extends App {
   // definition for command-line argument parser
   val argumentParser = new scopt.immutable.OptionParser[Config]("openie") {
     def options = Seq(
-      argOpt("input file", "input file") { (string, config) =>
+      argOpt("input-file", "input file") { (string, config) =>
         val file = new File(string)
         require(file.exists, "input file does not exist: " + file)
         config.copy(inputFile = Some(file))
       },
-      argOpt("ouput file", "output file") { (string, config) =>
+      argOpt("ouput-file", "output file") { (string, config) =>
         val file = new File(string)
         config.copy(outputFile = Some(file))
       },
