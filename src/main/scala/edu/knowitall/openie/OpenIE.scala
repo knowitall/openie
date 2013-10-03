@@ -1,7 +1,7 @@
 package edu.knowitall.openie
 
 import edu.knowitall.srlie.SrlExtraction
-import edu.knowitall.tool.tokenize.ClearTokenizer
+import edu.knowitall.tool.tokenize.OpenNlpTokenizer
 import edu.knowitall.tool.chunk.OpenNlpChunker
 import edu.knowitall.tool.postag.OpenNlpPostagger
 import edu.knowitall.tool.parse.ClearParser
@@ -24,6 +24,7 @@ import edu.knowitall.tool.srl.ClearSrl
 import edu.knowitall.srlie.SrlExtraction
 import edu.knowitall.srlie.confidence.SrlConfidenceFunction
 import edu.knowitall.chunkedextractor.confidence.RelnounConfidenceFunction
+import com.google.common.base.CharMatcher
 
 class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearSrl(), triples: Boolean = false) {
   // confidence functions
@@ -31,7 +32,7 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
   val relnounConf = RelnounConfidenceFunction.loadDefaultClassifier()
 
   // sentence pre-processors
-  val tokenizer = new ClearTokenizer()
+  val tokenizer = new OpenNlpTokenizer()
   val postagger = new OpenNlpPostagger(tokenizer)
   val chunker = new OpenNlpChunker(postagger)
 
@@ -39,11 +40,25 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
   val relnoun = new Relnoun
   val srlie = new SrlExtractor(srl)
 
+  /***
+   * Remove problematic characters from a line before extracting.
+   */
+  def clean(line: String): String = {
+    var cleaned = line
+
+    cleaned = CharMatcher.WHITESPACE.replaceFrom(cleaned, ' ')
+    cleaned = CharMatcher.INVISIBLE.removeFrom(cleaned)
+    cleaned = CharMatcher.JAVA_ISO_CONTROL.removeFrom(cleaned)
+
+    cleaned
+  }
+
   def apply(sentence: String): Seq[Instance] = extract(sentence)
   def extract(sentence: String): Seq[Instance] = {
     // pre-process the sentence
-    val chunked = chunker(sentence) map MorphaStemmer.lemmatizePostaggedToken
-    val parsed = parser(sentence)
+    val cleaned = clean(sentence)
+    val chunked = chunker(cleaned) map MorphaStemmer.lemmatizePostaggedToken
+    val parsed = parser(cleaned)
 
     // run extractors
     val srlExtrs: Seq[SrlExtractionInstance] =
