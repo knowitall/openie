@@ -35,17 +35,17 @@ object OpenIECli extends App {
    * An abstract class definite how extractions are outputted.
    */
   sealed abstract class OutputFormat {
-    def print(sentence: String, insts: Seq[Instance])
+    def print(writer: PrintWriter, sentence: String, insts: Seq[Instance])
   }
 
   /***
    * Sentences are printed followed by extractions, one per line.
    */
   case object SimpleFormat extends OutputFormat {
-    def print(sentence: String, insts: Seq[Instance]) {
-      println(sentence)
-      insts foreach println
-      println()
+    def print(writer: PrintWriter, sentence: String, insts: Seq[Instance]) {
+      writer.println(sentence)
+      insts foreach writer.println
+      writer.println()
     }
   }
 
@@ -53,9 +53,9 @@ object OpenIECli extends App {
    * All relevant data is printed in columns seperated by tab.
    */
   case object ColumnFormat extends OutputFormat {
-    def print(sentence: String, insts: Seq[Instance]) {
+    def print(writer: PrintWriter, sentence: String, insts: Seq[Instance]) {
       insts.foreach { inst =>
-        println(
+        writer.println(
             Iterator(
                 inst.confidence,
                 inst.extr.context.getOrElse(""),
@@ -200,7 +200,7 @@ object OpenIECli extends App {
         try {
           // run the extractor
           val insts = openie.extract(sentence)
-          config.formatter.print(sentence, insts)
+          config.formatter.print(writer, sentence, insts)
         }
         catch {
           case e if config.ignoreErrors =>
