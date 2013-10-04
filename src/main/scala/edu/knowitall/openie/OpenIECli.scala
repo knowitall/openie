@@ -183,6 +183,10 @@ object OpenIECli extends App {
     // a sentencer used if --split is specified
     lazy val sentencer = new OpenNlpSentencer
 
+    config.inputFile.foreach { file =>
+      System.err.println("Processing file: " + file)
+    }
+
     // iterate over input
     for {
       source <- managed(config.source())
