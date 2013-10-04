@@ -42,6 +42,8 @@ javaOptions += "-XX:+UseConcMarkSweepGC"
 
 fork in run := true
 
+fork in Test := true
+
 connectInput in run := true // forward stdin/out to fork
 
 licenses := Seq("Open IE Software License Agreement" -> url("https://raw.github.com/knowitall/openie/master/LICENSE"))
