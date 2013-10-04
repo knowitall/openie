@@ -16,12 +16,12 @@ resolvers += "Sonatype SNAPSHOTS" at "https://oss.sonatype.org/content/repositor
 
 libraryDependencies ++= Seq(
   // extractor components
-  "edu.washington.cs.knowitall.srlie" %% "srlie" % "1.0.0",
-  "edu.washington.cs.knowitall.chunkedextractor" %% "chunkedextractor" % "1.0.5",
+  "edu.washington.cs.knowitall.srlie" %% "srlie" % "1.0.1",
+  "edu.washington.cs.knowitall.chunkedextractor" %% "chunkedextractor" % "1.0.6",
   // for splitting sentences
-  "edu.washington.cs.knowitall.nlptools" %% "nlptools-sentence-opennlp" % "2.4.2",
+  "edu.washington.cs.knowitall.nlptools" %% "nlptools-sentence-opennlp" % "2.4.3",
   // for remote components
-  "net.databinder.dispatch" %% "dispatch-core" % "0.10.0",
+  "net.databinder.dispatch" %% "dispatch-core" % "0.11.0",
   // resource management
   "com.jsuereth" %% "scala-arm" % "1.3",
   // logging
