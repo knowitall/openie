@@ -47,7 +47,6 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
     var cleaned = line
 
     cleaned = CharMatcher.WHITESPACE.replaceFrom(cleaned, ' ')
-    cleaned = CharMatcher.INVISIBLE.removeFrom(cleaned)
     cleaned = CharMatcher.JAVA_ISO_CONTROL.removeFrom(cleaned)
 
     cleaned
