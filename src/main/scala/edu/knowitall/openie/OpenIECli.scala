@@ -205,6 +205,7 @@ object OpenIECli extends App {
           // run the extractor
           val insts = openie.extract(sentence)
           config.formatter.print(writer, sentence, insts)
+          writer.flush()
         }
         catch {
           case e if config.ignoreErrors =>
