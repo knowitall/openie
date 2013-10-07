@@ -74,9 +74,3 @@ pomExtra := (
   </developers>)
 
 packagerSettings
-
-archetypes.java_application
-
-packageSummary in Linux := "The name you want displayed in package summaries"
-
-packageDescription := " A description of your project"
