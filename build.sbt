@@ -6,7 +6,7 @@ name := "openie"
 
 organization := "edu.washington.cs.knowitall.openie"
 
-version := "4.1-SNAPSHOT"
+version := "4.1"
 
 crossScalaVersions := Seq("2.10.2")
 
