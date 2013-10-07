@@ -59,3 +59,16 @@ publishTo <<= version { (v: String) =>
   else
     Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
+
+pomExtra := (
+  <scm>
+    <url>https://github.com/knowitall/openie</url>
+    <connection>scm:git://github.com/knowitall/openie.git</connection>
+    <developerConnection>scm:git:git@github.com:knowitall/openie.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+  <developers>
+   <developer>
+      <name>Michael Schmitz</name>
+    </developer>
+  </developers>)
