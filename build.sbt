@@ -1,7 +1,5 @@
 import AssemblyKeys._
 
-net.virtualvoid.sbt.graph.Plugin.graphSettings
-
 assemblySettings
 
 name := "openie"
@@ -74,3 +72,11 @@ pomExtra := (
       <name>Michael Schmitz</name>
     </developer>
   </developers>)
+
+packagerSettings
+
+archetypes.java_application
+
+packageSummary in Linux := "The name you want displayed in package summaries"
+
+packageDescription := " A description of your project"
