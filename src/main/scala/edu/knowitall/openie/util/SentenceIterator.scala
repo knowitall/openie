@@ -4,7 +4,7 @@ import edu.knowitall.tool.segment.Segmenter
 
 class SentenceIterator(sentencer: Segmenter, private var lines: BufferedIterator[String]) extends Iterator[String] {
   var sentences: Iterator[String] = Iterator.empty
-      
+
   lines.dropWhile(_.trim.isEmpty)
 
   def nextSentences = {
@@ -12,7 +12,7 @@ class SentenceIterator(sentencer: Segmenter, private var lines: BufferedIterator
     lines = rest.dropWhile(_.trim.isEmpty).buffered
     sentencer.segmentTexts(paragraph.mkString(" ")).iterator.buffered
   }
-  
+
   def hasNext: Boolean = {
     if (sentences.hasNext) {
       true
