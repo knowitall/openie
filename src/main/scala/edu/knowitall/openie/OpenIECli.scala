@@ -1,20 +1,24 @@
 package edu.knowitall.openie
 
 import java.io.File
+import java.io.PrintStream
+import java.nio.charset.MalformedInputException
 import java.io.PrintWriter
-import scala.io.Source
-import resource._
 import java.net.URL
+
+import scala.io.Source
+
+import resource._
+
+import edu.knowitall.common.Timing
 import edu.knowitall.tool.parse.DependencyParser
 import edu.knowitall.tool.parse.ClearParser
 import edu.knowitall.tool.parse.RemoteDependencyParser
 import edu.knowitall.tool.srl.Srl
 import edu.knowitall.tool.srl.RemoteSrl
 import edu.knowitall.tool.srl.ClearSrl
-import java.io.PrintStream
 import edu.knowitall.tool.sentence.OpenNlpSentencer
 import edu.knowitall.openie.util.SentenceIterator
-import java.nio.charset.MalformedInputException
 
 /***
  * A command line application for exploring Open IE.
@@ -187,35 +191,43 @@ object OpenIECli extends App {
       System.err.println("Processing file: " + file)
     }
 
-    // iterate over input
-    for {
-      source <- managed(config.source())
-      writer <- managed(config.writer())
-    } {
-      val sentences =
-        if (config.split) new SentenceIterator(sentencer, source.getLines.buffered)
-        else source.getLines
-
-      // iterate over sentences
+    Timing.timeThen {
+      // iterate over input
       for {
-        sentence <- sentences
-        if !sentence.trim.isEmpty
+        source <- managed(config.source())
+        writer <- managed(config.writer())
       } {
-        try {
-          // run the extractor
-          val insts = openie.extract(sentence)
-          config.formatter.print(writer, sentence, insts)
-          writer.flush()
-        }
-        catch {
-          case e if config.ignoreErrors =>
-            System.err.println("Error on sentence: " + sentence)
-            e.printStackTrace()
-          case e: Exception =>
-            System.err.println("Error on sentence: " + sentence)
-            throw e
+        val sentences =
+          if (config.split) new SentenceIterator(sentencer, source.getLines.buffered)
+          else source.getLines
+
+        // iterate over sentences
+        for {
+          sentence <- sentences
+          if !sentence.trim.isEmpty
+        } {
+          try {
+            // run the extractor
+            val insts = openie.extract(sentence)
+            config.formatter.print(writer, sentence, insts)
+            writer.flush()
+          }
+          catch {
+            case e if config.ignoreErrors =>
+              System.err.println("Error on sentence: " + sentence)
+              e.printStackTrace()
+            case e: Exception =>
+              System.err.println("Error on sentence: " + sentence)
+              throw e
+          }
         }
       }
+    } { ns =>
+      System.err.println(s"Processed in ${Timing.Seconds.format(ns)}.")
+    }
+
+    config.outputFile.foreach { file =>
+      System.err.println("Output written to file: " + file)
     }
   }
 }
