@@ -12,8 +12,8 @@ import edu.knowitall.collection.immutable.Interval
  * @param  negated  whether this is a true or false assertion
  * @param  passive  whether this is a passive or active assertion
  */
-case class Extraction(arg1: Part, rel: Part, arg2s: Seq[Part], context: Option[Part], negated: Boolean, passive: Boolean) {
-  def tripleString = s"($arg1; $rel; ${arg2s.mkString("; ")})"
+case class Extraction(arg1: Argument, rel: Relation, arg2s: Seq[Argument], context: Option[Part], negated: Boolean, passive: Boolean) {
+  def tripleString = s"(${arg1.displayText}; ${rel.displayText}; ${arg2s.map(_.displayText).mkString("; ")})"
   override def toString = {
     val basic = tripleString
     context match {
@@ -26,8 +26,23 @@ case class Extraction(arg1: Part, rel: Part, arg2s: Seq[Part], context: Option[P
 /***
  * A component of an extraction.
  */
-case class Part(text: String, offsets: Seq[Interval]) {
-  def offsetSpan = Interval.span(offsets)
+abstract class Part {
+  def text: String
+  def offsets: Seq[Interval]
 
-  override def toString = text
+  def displayText = text
 }
+
+case class Context(text: String, offsets: Seq[Interval]) extends Argument
+
+abstract class Argument extends Part
+abstract class SemanticArgument extends Part
+case class SimpleArgument(text: String, offsets: Seq[Interval]) extends Argument
+case class SpatialArgument(text: String, offsets: Seq[Interval]) extends Argument {
+  override def displayText = "L:" + text
+}
+case class TemporalArgument(text: String, offsets: Seq[Interval]) extends Argument {
+  override def displayText = "T:" + text
+}
+
+case class Relation(text: String, offsets: Seq[Interval]) extends Part

@@ -1,30 +1,23 @@
 package edu.knowitall.openie
 
-import edu.knowitall.srlie.SrlExtraction
-import edu.knowitall.tool.tokenize.OpenNlpTokenizer
-import edu.knowitall.tool.chunk.OpenNlpChunker
-import edu.knowitall.tool.postag.OpenNlpPostagger
-import edu.knowitall.tool.parse.ClearParser
-import edu.knowitall.tool.postag.ClearPostagger
-import edu.knowitall.chunkedextractor.Relnoun
-import edu.knowitall.srlie.SrlExtractor
-import edu.knowitall.tool.stem.MorphaStemmer
-import edu.knowitall.srlie.SrlExtraction.Argument
-import edu.knowitall.srlie.SrlExtraction.Relation
-import edu.knowitall.chunkedextractor.BinaryExtractionInstance
-import edu.knowitall.srlie.SrlExtractionInstance
-import edu.knowitall.tool.stem.Lemmatized
-import edu.knowitall.tool.chunk.ChunkedToken
-import edu.knowitall.tool.parse.graph.DependencyNode
-import edu.knowitall.tool.srl.Roles
-import edu.knowitall.collection.immutable.Interval
-import edu.knowitall.tool.srl.Srl
-import edu.knowitall.tool.parse.DependencyParser
-import edu.knowitall.tool.srl.ClearSrl
-import edu.knowitall.srlie.SrlExtraction
-import edu.knowitall.srlie.confidence.SrlConfidenceFunction
-import edu.knowitall.chunkedextractor.confidence.RelnounConfidenceFunction
 import com.google.common.base.CharMatcher
+import edu.knowitall.chunkedextractor.BinaryExtractionInstance
+import edu.knowitall.chunkedextractor.Relnoun
+import edu.knowitall.chunkedextractor.confidence.RelnounConfidenceFunction
+import edu.knowitall.collection.immutable.Interval
+import edu.knowitall.srlie.SrlExtraction
+import edu.knowitall.srlie.SrlExtractionInstance
+import edu.knowitall.srlie.SrlExtractor
+import edu.knowitall.srlie.confidence.SrlConfidenceFunction
+import edu.knowitall.tool.chunk.ChunkedToken
+import edu.knowitall.tool.chunk.OpenNlpChunker
+import edu.knowitall.tool.parse.DependencyParser
+import edu.knowitall.tool.postag.OpenNlpPostagger
+import edu.knowitall.tool.srl.Srl
+import edu.knowitall.tool.stem.MorphaStemmer
+import edu.knowitall.tool.tokenize.OpenNlpTokenizer
+import edu.knowitall.tool.parse.ClearParser
+import edu.knowitall.tool.srl.ClearSrl
 
 class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearSrl(), triples: Boolean = false) {
   // confidence functions
@@ -84,11 +77,18 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
       }
       try {
         val extr = new Extraction(
-          rel = new Part(inst.extr.rel.text, offsets(inst.extr.rel)),
+          rel = new Relation(inst.extr.rel.text, offsets(inst.extr.rel)),
           // can't use offsets field due to a bug in 1.0.0-RC2
-          arg1 = new Part(inst.extr.arg1.text, Seq(Interval.open(inst.extr.arg1.tokens.head.offsets.start, inst.extr.arg1.tokens.last.offsets.end))),
-          arg2s = inst.extr.arg2s.map(arg2 => new Part(arg2.text, Seq(Interval.open(arg2.tokens.head.offsets.start, arg2.tokens.last.offsets.end)))),
-          context = inst.extr.context.map(context => new Part(context.text, Seq(Interval.open(context.tokens.head.offsets.start, context.tokens.last.offsets.end)))),
+          arg1 = new SimpleArgument(inst.extr.arg1.text, Seq(Interval.open(inst.extr.arg1.tokens.head.offsets.start, inst.extr.arg1.tokens.last.offsets.end))),
+          arg2s = inst.extr.arg2s.map { arg2 =>
+            val offsets = Seq(Interval.open(arg2.tokens.head.offsets.start, arg2.tokens.last.offsets.end))
+            arg2 match {
+              case arg2: SrlExtraction.TemporalArgument => new TemporalArgument(arg2.text, offsets)
+              case arg2: SrlExtraction.LocationArgument => new SpatialArgument(arg2.text, offsets)
+              case arg2: SrlExtraction.Argument => new SimpleArgument(arg2.text, offsets)
+            }
+          },
+          context = inst.extr.context.map(context => new Context(context.text, Seq(Interval.open(context.tokens.head.offsets.start, context.tokens.last.offsets.end)))),
           negated = inst.extr.negated,
           passive = inst.extr.passive)
         Instance(srlieConf(inst), sentence, extr)
@@ -101,9 +101,9 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
 
     def convertRelnoun(inst: BinaryExtractionInstance[ChunkedToken]): Instance = {
       val extr = new Extraction(
-        rel = new Part(inst.extr.rel.text, Seq(inst.extr.rel.offsetInterval)),
-        arg1 = new Part(inst.extr.arg1.text, Seq(inst.extr.arg1.offsetInterval)),
-        arg2s = Seq(new Part(inst.extr.arg2.text, Seq(inst.extr.arg2.offsetInterval))),
+        rel = new Relation(inst.extr.rel.text, Seq(inst.extr.rel.offsetInterval)),
+        arg1 = new SimpleArgument(inst.extr.arg1.text, Seq(inst.extr.arg1.offsetInterval)),
+        arg2s = Seq(new SimpleArgument(inst.extr.arg2.text, Seq(inst.extr.arg2.offsetInterval))),
         context = None,
         negated = false,
         passive = false)
