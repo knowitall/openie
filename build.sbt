@@ -1,4 +1,5 @@
 import AssemblyKeys._
+import NativePackagerKeys._
 
 assemblySettings
 
@@ -75,8 +76,9 @@ pomExtra := (
 
 packagerSettings
 
-archetypes.java_application
+packageArchetype.java_application
 
-packageSummary in Linux := "The name you want displayed in package summaries"
-
-packageDescription := " A description of your project"
+mappings in Universal ++= Seq(
+  file("README.md") -> "README.md",
+  file("LICENSE") -> "LICENSE"
+)
