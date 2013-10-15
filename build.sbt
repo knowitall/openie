@@ -1,6 +1,5 @@
 import AssemblyKeys._
-
-net.virtualvoid.sbt.graph.Plugin.graphSettings
+import NativePackagerKeys._
 
 assemblySettings
 
@@ -74,3 +73,12 @@ pomExtra := (
       <name>Michael Schmitz</name>
     </developer>
   </developers>)
+
+packagerSettings
+
+packageArchetype.java_application
+
+mappings in Universal ++= Seq(
+  file("README.md") -> "README.md",
+  file("LICENSE") -> "LICENSE"
+)
