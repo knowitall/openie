@@ -43,6 +43,15 @@ have a correct extraction.
 
 To see an example of Open IE being used, please visit http://openie.cs.washington.edu/.
 
+## Research
+
+Open IE 4.0 is the successor to [Ollie](http://www.gitub.com/knowitall/ollie).
+Whereas Ollie used bootstrapped dependency parse paths to extract relations
+(see [Open Language Learning for Information Extraction](https://homes.cs.washington.edu/~mausam/papers/emnlp12a.pdf)),
+Open IE 4.0 uses similar argument and relation expansion heuristics to create
+Open IE extractions from SRL frames.  Open IE 4.0 also extends the defintion of
+Open IE extractions to include n-ary extractions (extractions with 0 or more arguments 2s).
+
 ## Buiding
 
 `openie` uses the [sbt build system](http://www.scala-sbt.org/), so downloading
