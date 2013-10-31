@@ -3,11 +3,11 @@ import NativePackagerKeys._
 
 assemblySettings
 
+ReleaseSettings.defaults
+
 name := "openie"
 
 organization := "edu.washington.cs.knowitall.openie"
-
-version := "4.1.1-SNAPSHOT"
 
 crossScalaVersions := Seq("2.10.2")
 
