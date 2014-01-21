@@ -7,7 +7,7 @@ ReleaseSettings.defaults
 
 name := "openie"
 
-organization := "edu.washington.cs.knowitall.openie"
+organization := "org.allenai.openie"
 
 crossScalaVersions := Seq("2.10.2")
 
@@ -17,7 +17,7 @@ resolvers += "Sonatype SNAPSHOTS" at "https://oss.sonatype.org/content/repositor
 
 libraryDependencies ++= Seq(
   // extractor components
-  "edu.washington.cs.knowitall.srlie" %% "srlie" % "1.0.2",
+  "org.allenai.srlie" %% "srlie" % "1.1.0-SNAPSHOT",
   "edu.washington.cs.knowitall.chunkedextractor" %% "chunkedextractor" % "1.0.7",
   // for splitting sentences
   "edu.washington.cs.knowitall.nlptools" %% "nlptools-sentence-opennlp" % "2.4.4",
