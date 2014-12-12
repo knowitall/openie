@@ -25,9 +25,10 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
   val relnounConf = RelnounConfidenceFunction.loadDefaultClassifier()
 
   // sentence pre-processors
-  val tokenizer = new OpenNlpTokenizer()
-  val postagger = new OpenNlpPostagger(tokenizer)
-  val chunker = new OpenNlpChunker(postagger)
+     val tokenizer = new OpenNlpTokenizer()
+     val postagger = new OpenNlpPostagger(tokenizer)
+     val chunkerOIE = new OpenNlpChunker(postagger)
+  // Comented above as added these in method apply
 
   // subextractors
   val relnoun = new Relnoun
@@ -37,8 +38,8 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
    * Remove problematic characters from a line before extracting.
    */
   def clean(line: String): String = {
-    var cleaned = line
-
+    var cleaned = line.replace('’','\'').replace('–','-')
+    
     cleaned = CharMatcher.WHITESPACE.replaceFrom(cleaned, ' ')
     cleaned = CharMatcher.JAVA_ISO_CONTROL.removeFrom(cleaned)
 
@@ -46,7 +47,7 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
   }
 
   def apply(sentence: String): Seq[Instance] = extract(sentence)
-  def extract(sentence: String): Seq[Instance] = {
+  def extract(sentence: String, chunker : OpenNlpChunker = chunkerOIE): Seq[Instance] = {
     // pre-process the sentence
     val cleaned = clean(sentence)
     val chunked = chunker(cleaned) map MorphaStemmer.lemmatizePostaggedToken
