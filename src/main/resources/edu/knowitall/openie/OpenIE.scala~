@@ -29,19 +29,17 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
      val tokenizer = new OpenNlpTokenizer()
      val postagger = new OpenNlpPostagger(tokenizer)
      val chunkerOIE = new OpenNlpChunker(postagger)
-  
+  // Comented above as added these in method apply
+
   // subextractors
   val relnoun = new Relnoun
   val srlie = new SrlExtractor(srl)
 
-
+  val replaceChars = new ReplaceChars()
+  replaceChars.load()
   /***
    * Remove problematic characters from a line before extracting.
    */
-  // Added to overcome clearNLP tokenize issue
-  val replaceChars = new ReplaceChars()
-  replaceChars.load()
-
   def clean(line: String): String = {
     var cleaned = line
     cleaned = replaceChars.replacenow(cleaned)

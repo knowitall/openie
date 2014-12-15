@@ -1,0 +1,26 @@
+package edu.knowitall.openie.util
+
+import scala.io.Source
+
+class ReplaceChars()  {
+  val pairChars =  scala.collection.mutable.Set[Array[String]]()
+
+  def load() = {
+  try{
+    for(line <- Source.fromFile(this.getClass.getResource("non-UTF.txt").toString,"UTF-8").getLines())
+	    pairChars.add(line.split("\t"))
+  }
+  catch{
+	case e: Exception =>
+              System.err.println("Error on loading file: non-UTF.txt")
+		e.printStackTrace()
+    }
+  }
+  
+  def replacenow(line: String): String = {
+    var replaced = line
+    pairChars.foreach(arr=>{replaced = replaced.replaceAll(arr(0),arr(1))})
+    
+    replaced
+  }
+}
