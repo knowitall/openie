@@ -76,6 +76,10 @@ First create the stand-alone jar.
 
     sbt clean compile assembly
 
+You may need to add the above memory options.
+
+    sbt -J-Xmx2700M clean compile assembly
+
 Then you can run the resulting jar file as normal.
 
     java -jar openie-assembly.jar
