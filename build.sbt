@@ -72,6 +72,9 @@ pomExtra := (
    <developer>
       <name>Michael Schmitz</name>
     </developer>
+    <developer>
+      <name>Bhadra Mani</name>
+    </developer>
   </developers>)
 
 packagerSettings
