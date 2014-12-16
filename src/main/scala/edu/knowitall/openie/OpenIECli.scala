@@ -183,7 +183,11 @@ object OpenIECli extends App {
   def run(config: Config) {
     // the extractor system
     val openie = new OpenIE(parser=config.createParser(), srl=config.createSrl())
-
+    
+    println("* * * * * * * * * * * * *")
+    println("* OpenIE 4.1.x is ready *")
+    println("* * * * * * * * * * * * *")
+    
     // a sentencer used if --split is specified
     lazy val sentencer = new OpenNlpSentencer
 
