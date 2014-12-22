@@ -18,7 +18,7 @@ resolvers += "Sonatype SNAPSHOTS" at "https://oss.sonatype.org/content/repositor
 libraryDependencies ++= Seq(
   // extractor components
   "edu.washington.cs.knowitall.srlie" %% "srlie" % "1.0.3",
-  "edu.washington.cs.knowitall.chunkedextractor" %% "chunkedextractor" % "1.0.7",
+  "edu.washington.cs.knowitall.chunkedextractor" %% "chunkedextractor" % "1.0.9",
   // for splitting sentences
   "edu.washington.cs.knowitall.nlptools" %% "nlptools-sentence-opennlp" % "2.4.5",
   // for remote components

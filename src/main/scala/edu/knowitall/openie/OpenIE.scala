@@ -53,7 +53,8 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
   }
 
   def apply(sentence: String): Seq[Instance] = extract(sentence)
-  def extract(sentence: String, chunker : OpenNlpChunker = chunkerOIE): Seq[Instance] = {
+  def extract(sentence: String): Seq[Instance] = extract(sentence,chunkerOIE,triples)
+  def extract(sentence: String, chunker : OpenNlpChunker = chunkerOIE, isTriples: Boolean = triples): Seq[Instance] = {
     // pre-process the sentence
     val cleaned = clean(sentence)
     val chunked = chunker(cleaned) map MorphaStemmer.lemmatizePostaggedToken
@@ -61,7 +62,7 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
 
     // run extractors
     val srlExtrs: Seq[SrlExtractionInstance] =
-      if (triples) srlie(parsed).flatMap(_.triplize())
+      if (isTriples) srlie(parsed).flatMap(_.triplize())
       else srlie(parsed)
     val relnounExtrs = relnoun(chunked)
 
@@ -120,6 +121,6 @@ class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearS
     val extrs = (srlExtrs map convertSrl) ++ (relnounExtrs map convertRelnoun)
 
     extrs
-  }
+  } 
 }
 
