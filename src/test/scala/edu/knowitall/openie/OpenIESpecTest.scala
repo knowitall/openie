@@ -5,6 +5,7 @@ import edu.knowitall.tool.postag.OpenNlpPostagger
 import edu.knowitall.tool.tokenize.OpenNlpTokenizer
 
 
+
 import org.scalatest._
 
 class OpenIESpecTest extends FlatSpec with Matchers {
