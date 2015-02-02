@@ -54,7 +54,7 @@ Open IE extractions to include n-ary extractions (extractions with 0 or more arg
 
 ## Buiding
 
-`openie` uses the [sbt build system](http://www.scala-sbt.org/), so downloading
+`openie` uses java-7-openjdk & the [sbt build system](http://www.scala-sbt.org/), so downloading
 dependencies and compiling is simple.  Just run:
 
     sbt compile
