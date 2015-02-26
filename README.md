@@ -103,7 +103,7 @@ and `--split` which splits the input document text into sentences.
 
 There are two formats--a simple format made for ease of reading and a
 columnated format used for machine processing.  The format can be specified
-with either `--format simple` or `--format columnated`.  The simple format is
+with either `--format simple` or `--format column`.  The simple format is
 chosen by default.
 
 #### Simple Format
