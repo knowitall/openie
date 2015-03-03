@@ -98,8 +98,7 @@ Output unless a second option argument is specified for an output file.
 
 `openie` takes a number of command line arguments.  To see them all run
 `java -jar openie-assembly.jar --usage`.  Of particular interest are
-`--ignore-errors` which continues running even if an exception is encountered,
-and `--split` which splits the input document text into sentences.
+`--ignore-errors` which continues running even if an exception is encountered, `--binary` which gives the binary(triples) output and `--split` which splits the input document text into sentences.
 
 There are two formats--a simple format made for ease of reading and a
 columnated format used for machine processing.  The format can be specified
