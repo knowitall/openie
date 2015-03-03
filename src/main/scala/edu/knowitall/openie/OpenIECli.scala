@@ -92,6 +92,7 @@ object OpenIECli extends App {
     formatter: OutputFormat = SimpleFormat,
     ignoreErrors: Boolean = false,
     showUsage: Boolean = false,
+    binary: Boolean = false,
     split: Boolean = false) {
 
     /***
@@ -155,6 +156,9 @@ object OpenIECli extends App {
       flag("ignore-errors", "ignore errors") { config =>
         config.copy(ignoreErrors = true)
       },
+      flag("b", "binary", "binary output") { config =>
+        config.copy(binary = true)
+      },
       flag("s", "split", "Split paragraphs into sentences") { config =>
         config.copy(split = true)
       })
@@ -182,7 +186,7 @@ object OpenIECli extends App {
    */
   def run(config: Config) {
     // the extractor system
-    val openie = new OpenIE(parser=config.createParser(), srl=config.createSrl())
+    val openie = new OpenIE(parser=config.createParser(), srl=config.createSrl(),config.binary)
     
     println("* * * * * * * * * * * * *")
     println("* OpenIE 4.1.x is ready *")
