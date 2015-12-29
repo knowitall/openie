@@ -14,24 +14,27 @@ import edu.knowitall.tool.chunk.ChunkedToken
 import edu.knowitall.tool.chunk.OpenNlpChunker
 import edu.knowitall.tool.parse.DependencyParser
 import edu.knowitall.tool.postag.OpenNlpPostagger
+import edu.knowitall.tool.postag.ClearPostagger
 import edu.knowitall.tool.srl.Srl
 import edu.knowitall.tool.stem.MorphaStemmer
 import edu.knowitall.tool.tokenize.OpenNlpTokenizer
 import edu.knowitall.tool.parse.ClearParser
 import edu.knowitall.tool.srl.ClearSrl
+import edu.knowitall.tool.postag.ClearPostagger
+import edu.knowitall.tool.tokenize.ClearTokenizer
 
-class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearSrl(), triples: Boolean = false) {
+class OpenIE(parser: DependencyParser = new ClearParser(), srl: Srl = new ClearSrl(), triples: Boolean = false, includeUnknownArg2: Boolean = false) {
   // confidence functions
   val srlieConf = SrlConfidenceFunction.loadDefaultClassifier()
   val relnounConf = RelnounConfidenceFunction.loadDefaultClassifier()
 
   // sentence pre-processors
-     val tokenizer = new OpenNlpTokenizer()
-     val postagger = new OpenNlpPostagger(tokenizer)
-     val chunkerOIE = new OpenNlpChunker(postagger)
+  val tokenizer = new ClearTokenizer()
+  val postagger = new ClearPostagger(tokenizer)
+  val chunkerOIE = new OpenNlpChunker(postagger)
   
   // subextractors
-  val relnoun = new Relnoun
+  val relnoun = new Relnoun(true, true, includeUnknownArg2)
   val srlie = new SrlExtractor(srl)
 
 

@@ -93,7 +93,8 @@ object OpenIECli extends App {
     ignoreErrors: Boolean = false,
     showUsage: Boolean = false,
     binary: Boolean = false,
-    split: Boolean = false) {
+    split: Boolean = false,
+    includeUnknownArg2: Boolean = false) {
 
     /***
      * Create the input source from a file or stdin.
@@ -156,6 +157,9 @@ object OpenIECli extends App {
       flag("ignore-errors", "ignore errors") { config =>
         config.copy(ignoreErrors = true)
       },
+      flag("include-unknown-arg2", "includes arg2 [UNKNOWN] extractions from relnoun") { config =>
+        config.copy(includeUnknownArg2 = true)
+      },
       flag("b", "binary", "binary output") { config =>
         config.copy(binary = true)
       },
@@ -174,7 +178,7 @@ object OpenIECli extends App {
         case e: MalformedInputException =>
           System.err.println(
             "\nError: a MalformedInputException was thrown.\n" +
-            "This usually means there is a mismatch between what Ollie expects and the input file.\n" +
+            "This usually means there is a mismatch between what is expected and the input file.\n" +
             "Try changing the input file's character encoding to UTF-8 or specifying the correct character encoding for the input file with '--encoding'.\n")
           e.printStackTrace()
       }
@@ -186,7 +190,7 @@ object OpenIECli extends App {
    */
   def run(config: Config) {
     // the extractor system
-    val openie = new OpenIE(parser=config.createParser(), srl=config.createSrl(),config.binary)
+    val openie = new OpenIE(parser=config.createParser(), srl=config.createSrl(),config.binary, config.includeUnknownArg2)
     
     println("* * * * * * * * * * * * *")
     println("* OpenIE 4.1.x is ready *")

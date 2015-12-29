@@ -15,7 +15,7 @@ class OpenIESpecTest extends FlatSpec with Matchers {
     val insts = openie("U.S. president Obama gave a speech")
 
     insts.size should be (2)
-    insts.map(_.extraction.toString).sorted should be (Seq("(Obama; [is] president [of]; U.S.)", "(U.S. president Obama; gave; a speech)"))
+    insts.map(_.extraction.toString).sorted should be (Seq("(Obama; [is] president [of]; United States)", "(U.S. president Obama; gave; a speech)"))
 
     // sentence pre-processors
     val tokenizertest = new OpenNlpTokenizer()
@@ -24,7 +24,7 @@ class OpenIESpecTest extends FlatSpec with Matchers {
 
     val inststest = openie.extract("U.S. president Obama gave a speech",chunkertest)
     inststest.size should be (2)
-    inststest.map(_.extraction.toString).sorted should be (Seq("(Obama; [is] president [of]; U.S.)", "(U.S. president Obama; gave; a speech)"))
+    inststest.map(_.extraction.toString).sorted should be (Seq("(Obama; [is] president [of]; United States)", "(U.S. president Obama; gave; a speech)"))
 
   }
 }
