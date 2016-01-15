@@ -43,13 +43,17 @@ have a correct extraction.
 
 To see an example of Open IE being used, please visit http://openie.cs.washington.edu/.
 
+## Notifications
+
+* [01/15/2016] The version 4.2.0 is released ([release notes](https://github.com/knowitall/openie/blob/master/release/release_notes.md)).
+
 ## Research
 
-Open IE 4.0 is the successor to [Ollie](http://www.gitub.com/knowitall/ollie).
+Open IE 4.x is the successor to [Ollie](http://www.gitub.com/knowitall/ollie).
 Whereas Ollie used bootstrapped dependency parse paths to extract relations
 (see [Open Language Learning for Information Extraction](https://homes.cs.washington.edu/~mausam/papers/emnlp12a.pdf)),
-Open IE 4.0 uses similar argument and relation expansion heuristics to create
-Open IE extractions from SRL frames.  Open IE 4.0 also extends the defintion of
+Open IE 4.x uses similar argument and relation expansion heuristics to create
+Open IE extractions from SRL frames.  Open IE 4.x also extends the defintion of
 Open IE extractions to include n-ary extractions (extractions with 0 or more arguments 2s).
 
 ## Buiding
@@ -126,3 +130,4 @@ Columns are separated by tab, making it hard to read in this README.
 ## Contributors
 * Michael Schmitz (http://www.schmitztech.com/)
 * Bhadra Mani
+
