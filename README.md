@@ -49,7 +49,7 @@ To see an example of Open IE being used, please visit http://openie.cs.washingto
 
 ## Google Group
 
-* ([knowitall_openie](https://groups.google.com/forum/#!forum/knowitall_openie)).
+* [knowitall_openie](https://groups.google.com/forum/#!forum/knowitall_openie)
 
 ## Research
 
@@ -113,7 +113,7 @@ columnated format used for machine processing.  The format can be specified
 with either `--format simple` or `--format column`.  The simple format is
 chosen by default.
 
-### Running from a stand-alone jar
+### Java Demo
 
 A simple java demo which uses openIE (https://github.com/OpenIE-HelperCodes/OpenIEDemo1)
 
