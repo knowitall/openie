@@ -47,6 +47,10 @@ To see an example of Open IE being used, please visit http://openie.cs.washingto
 
 * [01/15/2016] The version 4.2.0 is released ([release notes](https://github.com/knowitall/openie/blob/master/release/release_notes.md)).
 
+## Google Group
+
+* ([knowitall_openie](https://groups.google.com/forum/#!forum/knowitall_openie)).
+
 ## Research
 
 Open IE 4.x is the successor to [Ollie](http://www.gitub.com/knowitall/ollie).
@@ -109,6 +113,10 @@ columnated format used for machine processing.  The format can be specified
 with either `--format simple` or `--format column`.  The simple format is
 chosen by default.
 
+### Running from a stand-alone jar
+
+A simple java demo which uses openIE (https://github.com/OpenIE-HelperCodes/OpenIEDemo1)
+
 #### Simple Format
 
 ```
@@ -129,5 +137,6 @@ Columns are separated by tab, making it hard to read in this README.
 
 ## Contributors
 * Michael Schmitz (http://www.schmitztech.com/)
+* Harinder Pal (http://www.cse.iitd.ac.in/~mcs142123/)
 * Bhadra Mani
 
