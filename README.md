@@ -53,6 +53,7 @@ Open IE 4 is a combination of SRLIE and Relnoun. The closest papers for these tw
 2.      Harinder Pal, Mausam. "Demonyms and Compound Relational Nouns in Nominal Open IE". Workshop on Automated Knowledge Base Construction (AKBC) at NAACL. San Diego, CA, USA. June 2016.
  
 A survey paper summarizing about ten years of progress in Open IE:
+
 3.      Mausam. "Open Information Extraction Systems and Downstream Applications". Invited Paper for Early Career Spotlight Track. International Joint Conference on Artificial Intelligence (IJCAI). New York, NY. July 2016.
 
 ## Notifications
