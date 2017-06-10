@@ -45,6 +45,16 @@ have a correct extraction.
 
 To see an example of Open IE being used, please visit http://openie.cs.washington.edu/.
 
+## Citing Open IE 4
+
+Open IE 4 is a combination of SRLIE and Relnoun. The closest papers for these two are:
+ 
+1.      Janara Christensen, Mausam, Stephen Soderland, Oren Etzioni. "An Analysis of Open Information Extraction based on Semantic Role Labeling". International Conference on Knowledge Capture (KCAP). Banff, Alberta, Canada. June 2011.
+2.      Harinder Pal, Mausam. "Demonyms and Compound Relational Nouns in Nominal Open IE". Workshop on Automated Knowledge Base Construction (AKBC) at NAACL. San Diego, CA, USA. June 2016.
+ 
+A survey paper summarizing about ten years of progress in Open IE:
+3.      Mausam. "Open Information Extraction Systems and Downstream Applications". Invited Paper for Early Career Spotlight Track. International Joint Conference on Artificial Intelligence (IJCAI). New York, NY. July 2016.
+
 ## Notifications
 
 * [01/15/2016] The version 4.2.0 is released ([release notes](https://github.com/knowitall/openie/blob/master/release/release_notes.md)).
