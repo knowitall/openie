@@ -1,4 +1,4 @@
-** **DEPRECATED!** ** Please see https://github.com/allenai/openie-standalone, which has combined multiple projects into a single project that builds on Scala 2.11.
+** DEPRECATED! ** Please see https://github.com/dair-iitd/OpenIE-standalone, which has combined multiple projects into a single project and maintains the latest version of Open IE (Open IE 5). It is based on another repository https://github.com/allenai/openie-standalone,  which has an older version of Open IE.
 
 Open IE
 ======
